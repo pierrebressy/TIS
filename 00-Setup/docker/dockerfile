@@ -1,0 +1,46 @@
+FROM ubuntu:latest
+RUN useradd -s /bin/bash -d /home/tis -m -G sudo tis
+RUN apt-get update
+RUN apt-get -y install python3.7
+RUN apt-get -y install python3-pip
+
+RUN pip3 install jupyter
+RUN pip3 install jupyterlab
+
+RUN pip3 install numpy
+RUN pip3 install matplotlib
+RUN pip3 install scipy
+
+RUN pip3 install pandas
+RUN apt-get -y install nodejs
+RUN apt-get -y install npm
+
+RUN jupyter labextension install @lckr/jupyterlab_variableinspector
+RUN jupyter labextension install @jupyterlab/toc
+
+
+#RUN cd /tmp && git clone git://github.com/minrk/nbextension-scratchpad && jupyter nbextension install nbextension-scratchpad
+#RUN jupyter nbextension enable nbextension-scratchpad/main
+
+RUN pip3 install sympy
+RUN pip3 install audiolazy
+RUN pip3 install imageio
+RUN pip3 install scikit-image
+
+RUN apt-get -y install git
+RUN jupyter labextension install @jupyterlab/git
+RUN pip3 install --upgrade jupyterlab-git
+RUN jupyter lab build
+RUN jupyter serverextension enable --py jupyterlab_git --system
+
+
+RUN pip3 install pandoc
+RUN pip3 install nbconvert
+#RUN pip3 install pyfda==0.1.5
+#RUN jupyter lab build
+
+
+
+
+EXPOSE 8888
+CMD ["jupyter", "lab", "--ip='0.0.0.0'", "--port=8888", "--no-browser", "--allow-root", "--notebook-dir=/home/tis/"]
